@@ -3,12 +3,12 @@
   "builds": [{ "src": "server.js", "use": "@vercel/node" }],
   "routes": [
     {
-      "src": "/http:/(.*)",
-      "dest": "server.js"
+      "src": "/favicon.ico",
+      "dest": "/public/doctor.svg"
     },
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "server.js"
     }
   ]
 }
