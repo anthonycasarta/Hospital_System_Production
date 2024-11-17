@@ -16,7 +16,7 @@ const corsOptions = {
   origin:
     process.env.NODE_ENV === "development"
       ? "http://localhost:5173"
-      : "https://hospital-system-production.vercel.app/", // Allow your frontend's origin
+      : "https://hospital-system-production.vercel.app", // Allow your frontend's origin
   methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
   credentials: true, // Allow credentials such as cookies or headers
   allowedHeaders: ["Content-Type", "Authorization"], // Allow specific headers
