@@ -28,7 +28,7 @@ app.use(bodyParser.json()); // Parse JSON requests
 
 // Routes
 app.use("/api/edibles", fruitRouter);
-app.use("/auth", authRouter);
+app.use("/api/auth", authRouter);
 app.use("/api/appointment", appointmentRouter);
 app.use("/api/dataFetch", dataFetchRouter);
 
