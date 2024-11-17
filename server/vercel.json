@@ -11,7 +11,7 @@
       "dest": "/public/doctor.svg"
     },
     {
-      "src": "/(.*)",
+      "src": "/api/(.*)",
       "dest": "server.js"
     }
   ]
