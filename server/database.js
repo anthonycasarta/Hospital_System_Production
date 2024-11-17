@@ -1,15 +1,16 @@
 import mysql from "mysql2/promise";
 import fs from "fs";
+import dotenv from "dotenv";
 
 // Load configuration from config.json
 const config = JSON.parse(fs.readFileSync("./config.json"));
 
 // Create a connection pool with SSL settings if needed
 const pool = mysql.createPool({
-  host: config.db.host,
-  user: config.db.user,
-  password: config.db.password,
-  database: config.db.database,
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_DATABASE,
   connectionLimit: 10,
   ssl: {
     rejectUnauthorized: true, // You can set this to `false` to allow self-signed certs
