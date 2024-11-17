@@ -24,7 +24,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions)); // Enable CORS with options
 app.use(bodyParser.json()); // Parse JSON requests
-app.options("*", cors(corsOptions)); // Handle preflight requests
+//app.options("*", cors(corsOptions)); // Handle preflight requests
 
 // Routes
 app.use("/api/edibles", fruitRouter);
