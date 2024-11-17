@@ -14,7 +14,7 @@ const app = express();
 // CORS options configuration
 const corsOptions = {
   origin:
-    process.env.NODE_ENV === "development"
+    process.env.NODE_ENV !== "production"
       ? "http://localhost:5173"
       : "https://hospital-system-production.vercel.app", // Allow your frontend's origin
   methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
@@ -41,7 +41,10 @@ export default (req, res) => {
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to the Hospital System API!" });
 });
-// Start the server
-app.listen(3000, () => {
-  console.log("Server started on port 3000");
-});
+// Local development: Start the server
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`Server running locally on http://localhost:${PORT}`);
+  });
+}
