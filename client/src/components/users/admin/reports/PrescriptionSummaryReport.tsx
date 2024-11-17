@@ -88,7 +88,7 @@ export default function PrescriptionSummaryReport() {
         const token = localStorage.getItem("token");
         console.log("filters: ", filters);
         const response = await axios.get(
-          `${envConfig.apiUrl}/api/auth/admin/get-prescription-report`,
+          `${envConfig.apiUrl}/auth/admin/get-prescription-report`,
 
           {
             params: [filters, activeTab],

@@ -48,7 +48,7 @@ const RegistrationPage = () => {
 
     try {
       const response = await axios.post(
-        `${envConfig.apiUrl}/api/auth/register`,
+        `${envConfig.apiUrl}/auth/register`,
         formData
       );
 
