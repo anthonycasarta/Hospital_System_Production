@@ -2,8 +2,11 @@ import mysql from "mysql2/promise";
 import fs from "fs";
 import dotenv from "dotenv";
 
+// Load environment variables from .env file
+dotenv.config();
+
 // Load configuration from config.json
-const config = JSON.parse(fs.readFileSync("./config.json"));
+//const config = JSON.parse(fs.readFileSync("./config.json"));
 
 // Create a connection pool with SSL settings if needed
 const pool = mysql.createPool({
