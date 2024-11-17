@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import IconLogo from "../header/IconLogo";
-import Navbar from "../header/Navbar";
+//import Navbar from "../header/Navbar";
+import Navbar from "../header/NavBar.jsx";
 import NavButton from "../../ui/buttons/NavButton";
 import MainSection from "./sections/MainSection";
 import Footer from "../../ui/Footer";
@@ -110,7 +111,10 @@ export default function WomensHealthLandingPage() {
               <NavButton onClick={() => navigate("/consultation")}>
                 Schedule a Consultation
               </NavButton>
-              <NavButton variant="outline" onClick={() => navigate("/services")}>
+              <NavButton
+                variant="outline"
+                onClick={() => navigate("/services")}
+              >
                 View Our Services
               </NavButton>
             </div>
