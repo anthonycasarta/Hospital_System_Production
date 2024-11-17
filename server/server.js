@@ -27,10 +27,10 @@ app.use(bodyParser.json()); // Parse JSON requests
 //app.options("*", cors(corsOptions)); // Handle preflight requests
 
 // Routes
-app.use("/edibles", fruitRouter);
-app.use("/auth", authRouter);
-app.use("/appointment", appointmentRouter);
-app.use("/dataFetch", dataFetchRouter);
+app.use("/api/edibles", fruitRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/appointment", appointmentRouter);
+app.use("/api/dataFetch", dataFetchRouter);
 
 // Export the Express app as the Vercel function handler
 export default (req, res) => {

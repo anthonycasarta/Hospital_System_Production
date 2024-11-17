@@ -23,7 +23,7 @@ const LoginPage = () => {
     setError("");
 
     try {
-      const response = await axios.post(`${envConfig.apiUrl}/auth/login`, {
+      const response = await axios.post(`${envConfig.apiUrl}/api/auth/login`, {
         email,
         password,
       });
