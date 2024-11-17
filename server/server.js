@@ -28,12 +28,12 @@ app.use("/auth", authRouter);
 app.use("/appointment", appointmentRouter);
 app.use("/dataFetch", dataFetchRouter);
 
-// Start the server
-app.listen(3000, () => {
-  console.log("Server started on port 3000");
-});
-
 // Export the Express app as the Vercel function handler
 export default (req, res) => {
   app(req, res); // This lets Vercel handle the serverless routing for you
 };
+
+// Start the server
+app.listen(3000, () => {
+  console.log("Server started on port 3000");
+});
