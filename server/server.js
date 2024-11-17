@@ -37,6 +37,10 @@ export default (req, res) => {
   app(req, res); // This lets Vercel handle the serverless routing for you
 };
 
+// Root Route for "/"
+app.get("/", (req, res) => {
+  res.json({ message: "Welcome to the Hospital System API!" });
+});
 // Start the server
 app.listen(3000, () => {
   console.log("Server started on port 3000");
