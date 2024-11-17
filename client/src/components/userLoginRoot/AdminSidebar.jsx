@@ -19,7 +19,7 @@ import AdminNameDisplay from "./sidebarItems/WelcomeAdminName";
 // Files Linked
 import AdminDashboard from "../users/admin/adminDashboard/AdminDashboard";
 import PrescriptionSummaryReport from "../users/admin/reports/PrescriptionSummaryReport";
-import AppointmentAnalytics from "../users/admin/sections/appointmentReport/appointmentAnalytics";
+import AppointmentAnalytics from "../users/admin/sections/appointmentReport/AppointmentAnalytics";
 
 export default function AdminSidebar() {
   const [activeTab, setActiveTab] = useState("dashboard");
