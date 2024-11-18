@@ -1,5 +1,5 @@
 import express from "express";
-import { login, register } from "../api/controllers/authController.js";
+import { login, register } from "../controllers/authController.js";
 import { verifyToken, authorizeRole } from "../middleware/auth.js";
 import adminRouter from "./users/adminRouter.js";
 import doctorRouter from "./users/doctorRouter.js";

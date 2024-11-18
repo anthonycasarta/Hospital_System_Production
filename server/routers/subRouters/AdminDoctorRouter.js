@@ -6,7 +6,7 @@ import {
   getStates,
   getCities,
   getDoctors,
-} from "../../api/controllers/admin/reportController.js";
+} from "../../controllers/admin/reportController.js";
 
 const router = express.Router();
 
