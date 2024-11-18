@@ -1,9 +1,6 @@
-// src/components/users/admin/sections/SystemReports.jsx
-
 import React, { useState, useEffect, useMemo } from "react";
 import Select from "react-select";
-import { FileText } from "lucide-react"; // Example icon, adjust as needed
-
+import axios from "axios";
 import envConfig from "../../../envConfig";
 
 const SystemReports = () => {
@@ -30,127 +27,77 @@ const SystemReports = () => {
   const [reportData, setReportData] = useState([]);
   const [expandedDoctors, setExpandedDoctors] = useState({});
 
-  // **New State for Sorting**
   const [sortOption, setSortOption] = useState("");
 
+  const token = localStorage.getItem("token");
+
+  const axiosInstance = axios.create({
+    baseURL: envConfig.apiUrl,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const fetchData = async () => {
+      try {
+        const [
+          officeLocationsRes,
+          specialtiesRes,
+          statesRes,
+          citiesRes,
+          doctorsRes,
+        ] = await Promise.all([
+          axiosInstance.get("/auth/admin/adminDoctorReport/getOfficeLocations"),
+          axiosInstance.get("/auth/admin/adminDoctorReport/getSpecialties"),
+          axiosInstance.get("/auth/admin/adminDoctorReport/getStates"),
+          axiosInstance.get("/auth/admin/adminDoctorReport/getCities"),
+          axiosInstance.get("/auth/admin/adminDoctorReport/getDoctors"),
+        ]);
 
-    // Fetch Office Locations
-    fetch(
-      `${envConfig.apiUrl}/auth/admin/adminDoctorReport/getOfficeLocations`,
-      {
-        headers: {
-          withCredentials: true,
-          Authorization: `Bearer ${token}`,
-        },
+        setOfficeLocations(officeLocationsRes.data);
+        setSpecialties(specialtiesRes.data);
+        setStates(statesRes.data);
+        setCities(citiesRes.data);
+        setDoctors(doctorsRes.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
       }
-    )
-      .then((res) => res.json())
-      .then((data) => setOfficeLocations(data))
-      .catch((err) => console.error("Fetch error:", err));
+    };
 
-    // Fetch Specialties
-    fetch(`${envConfig.apiUrl}/auth/admin/adminDoctorReport/getSpecialties`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => setSpecialties(data))
-      .catch((err) => console.error("Fetch error:", err));
+    fetchData();
+  }, [axiosInstance]);
 
-    // Fetch States
-    fetch(`${envConfig.apiUrl}/auth/admin/adminDoctorReport/getStates`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => setStates(data))
-      .catch((err) => console.error("Fetch error:", err));
+  const handleGenerateReport = async () => {
+    try {
+      const params = new URLSearchParams();
 
-    // Fetch Cities
-    fetch(`${envConfig.apiUrl}/auth/admin/adminDoctorReport/getCities`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => setCities(data))
-      .catch((err) => console.error("Fetch error:", err));
+      selectedOffices.forEach((office) =>
+        params.append("officeID", office.value)
+      );
+      selectedSpecialties.forEach((specialty) =>
+        params.append("specialtyID", specialty.value)
+      );
+      selectedGenders.forEach((gender) =>
+        params.append("gender", gender.value)
+      );
+      selectedStates.forEach((state) => params.append("state", state.value));
+      selectedCities.forEach((city) => params.append("city", city.value));
+      selectedDoctors.forEach((doctor) =>
+        params.append("doctorID", doctor.value)
+      );
+      if (startDate) params.append("startDate", startDate);
+      if (endDate) params.append("endDate", endDate);
 
-    // Fetch Doctors with Debugging
-    fetch(`${envConfig.apiUrl}/auth/admin/adminDoctorReport/getDoctors`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Fetched Doctors Data:", data); // Debugging Line
+      const response = await axiosInstance.get(
+        `/auth/admin/adminDoctorReport/generateDoctorReport`,
+        { params }
+      );
 
-        // **Adjust based on data structure**
-        if (Array.isArray(data)) {
-          // If data is an array directly
-          setDoctors(data);
-        } else if (data.doctors && Array.isArray(data.doctors)) {
-          // If doctors are nested within an object
-          setDoctors(data.doctors);
-        } else if (data.length === 0) {
-          // If data is an empty array or undefined
-          setDoctors([]);
-        } else {
-          // Handle other unexpected structures
-          console.warn("Unexpected doctors data structure:", data);
-          setDoctors([]);
-        }
-      })
-      .catch((err) => console.error("Fetch error:", err));
-  }, []);
-
-  const handleGenerateReport = () => {
-    const token = localStorage.getItem("token");
-    const params = new URLSearchParams();
-
-    selectedOffices.forEach((office) => {
-      params.append("officeID", office.value);
-    });
-    selectedSpecialties.forEach((specialty) => {
-      params.append("specialtyID", specialty.value);
-    });
-    selectedGenders.forEach((gender) => {
-      params.append("gender", gender.value);
-    });
-    selectedStates.forEach((state) => {
-      params.append("state", state.value);
-    });
-    selectedCities.forEach((city) => {
-      params.append("city", city.value);
-    });
-    selectedDoctors.forEach((doctor) => {
-      params.append("doctorID", doctor.value);
-    });
-    if (startDate) {
-      params.append("startDate", startDate);
+      setReportData(response.data);
+    } catch (error) {
+      console.error("Error generating report:", error);
     }
-    if (endDate) {
-      params.append("endDate", endDate);
-    }
-
-    fetch(
-      `${
-        envConfig.apiUrl
-      }/auth/admin/adminDoctorReport/generateDoctorReport?${params.toString()}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => setReportData(data))
-      .catch((err) => console.error("Fetch error:", err));
   };
 
   const toggleDoctorDetails = (doctorID) => {
@@ -180,36 +127,10 @@ const SystemReports = () => {
     return addressParts.join(", ");
   };
 
-  // **Aggregate Data Calculations**
-  const totalPrescriptions = reportData.reduce(
-    (acc, doctor) => acc + doctor.prescriptions.length,
-    0
-  );
-
-  const totalAppointments = reportData.reduce(
-    (acc, doctor) => acc.concat(doctor.appointments),
-    []
-  );
-
-  const appointmentStatusCounts = totalAppointments.reduce(
-    (acc, appointment) => {
-      const status = appointment.status;
-      if (acc[status]) {
-        acc[status] += 1;
-      } else {
-        acc[status] = 1;
-      }
-      return acc;
-    },
-    { Scheduled: 0, Requested: 0, Completed: 0 }
-  );
-
-  // **Memoized Sorted Data**
   const sortedReportData = useMemo(() => {
     if (!sortOption) return reportData;
 
     const sortedData = [...reportData];
-
     sortedData.sort((a, b) => {
       switch (sortOption) {
         case "prescriptionCount":
