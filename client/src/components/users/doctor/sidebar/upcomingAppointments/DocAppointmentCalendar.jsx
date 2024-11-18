@@ -7,6 +7,8 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import AppointmentModal from "./AppointmentModal";
 import MultiSelectInput from "./MultiSelectInput";
 
+import envConfig from "../../../../../envConfig";
+
 // Localization setup
 const locales = {
   "en-US": import("date-fns/locale/en-US"),
@@ -46,7 +48,8 @@ function DocAppointmentCalendar() {
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedAppointmentModal, setSelectedAppointmentModal] = useState(null);
+  const [selectedAppointmentModal, setSelectedAppointmentModal] =
+    useState(null);
 
   // Define the status-to-color mapping
   const statusColors = {
@@ -64,7 +67,7 @@ function DocAppointmentCalendar() {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          "http://localhost:3000/appointment/doctorAppointments",
+          `${envConfig.apiUrl}/appointment/doctorAppointments`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -182,14 +185,14 @@ function DocAppointmentCalendar() {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        "http://localhost:3000/appointment/updateAppointment",
+        `${envConfig.apiUrl}/appointment/updateAppointment`,
         { appointmentID, status },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       // Refresh appointments
       setLoading(true);
       const response = await axios.get(
-        "http://localhost:3000/appointment/doctorAppointments",
+        `${envConfig.apiUrl}/appointment/doctorAppointments`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -226,9 +229,7 @@ function DocAppointmentCalendar() {
           app.reason || "No Reason"
         }`,
         start: new Date(app.appointmentDateTime),
-        end: new Date(
-          new Date(app.appointmentDateTime).getTime() + 30 * 60000
-        ), // Assuming 30 mins duration
+        end: new Date(new Date(app.appointmentDateTime).getTime() + 30 * 60000), // Assuming 30 mins duration
         allDay: false,
         resource: app, // Attach the entire appointment object
       }));

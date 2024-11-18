@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import DoctorsTable from './DoctorsTable.jsx';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import DoctorsTable from "./DoctorsTable.jsx";
+
+import envConfig from "../../../../../envConfig.js";
 
 const DoctorManagement = () => {
   const [doctors, setDoctors] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [includeInactive, setIncludeInactive] = useState(false);
 
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     fetchDoctors();
@@ -21,17 +23,19 @@ const DoctorManagement = () => {
       }
       params.includeInactive = includeInactive;
 
-      const response = await axios.get('http://localhost:3000/auth/admin/doctorManagement', {
-        headers: { Authorization: `Bearer ${token}` },
-        params,
-      });
-      console.log('Doctors data:', response.data.doctors);
+      const response = await axios.get(
+        `${envConfig.apiUrl}/auth/admin/doctorManagement`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          params,
+        }
+      );
+      console.log("Doctors data:", response.data.doctors);
       setDoctors(response.data.doctors);
     } catch (error) {
-      console.error('Error fetching doctors:', error);
+      console.error("Error fetching doctors:", error);
     }
   };
-
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
@@ -58,7 +62,11 @@ const DoctorManagement = () => {
       </div>
 
       {/* Doctors Table */}
-      <DoctorsTable doctors={doctors} fetchDoctors={fetchDoctors} token={token} />
+      <DoctorsTable
+        doctors={doctors}
+        fetchDoctors={fetchDoctors}
+        token={token}
+      />
     </div>
   );
 };

@@ -3,6 +3,8 @@ import axios from "axios";
 import AppointmentModal from "./AppointmentModal";
 import MultiSelectInput from "./MultiSelectInput"; // Adjust the import path accordingly
 
+import envConfig from "../../../../../envConfig";
+
 // Utility function to format phone numbers
 const formatPhoneNumber = (phoneNumberString) => {
   const cleaned = ("" + phoneNumberString).replace(/\D/g, "");
@@ -53,7 +55,7 @@ function DocAppointmentOverview() {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          "http://localhost:3000/appointment/doctorAppointments",
+          `${envConfig.apiUrl}/appointment/doctorAppointments`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -204,14 +206,14 @@ function DocAppointmentOverview() {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        "http://localhost:3000/appointment/updateAppointment",
+        `${envConfig.apiUrl}/appointment/updateAppointment`,
         { appointmentID, status },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       // Refresh appointments
       setLoading(true);
       const response = await axios.get(
-        "http://localhost:3000/appointment/doctorAppointments",
+        `${envConfig.apiUrl}/appointment/doctorAppointments`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

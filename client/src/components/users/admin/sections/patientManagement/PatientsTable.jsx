@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import PatientDetailsModal from './PatientDetailsModal.jsx';
-import axios from 'axios';
+import React, { useState } from "react";
+import PatientDetailsModal from "./PatientDetailsModal.jsx";
+import axios from "axios";
+
+import envConfig from "../../../../../envConfig.js";
 
 const PatientsTable = ({ patients, fetchPatients, token }) => {
   const [selectedPatient, setSelectedPatient] = useState(null);
@@ -17,41 +19,45 @@ const PatientsTable = ({ patients, fetchPatients, token }) => {
   };
 
   const handleInactivatePatient = async (patientID) => {
-    const confirmInactivate = window.confirm('Are you sure you want to inactivate this patient?');
+    const confirmInactivate = window.confirm(
+      "Are you sure you want to inactivate this patient?"
+    );
     if (confirmInactivate) {
       try {
         await axios.put(
-          `http://localhost:3000/auth/admin/patients/${patientID}/inactivate`,
+          `${envConfig.apiUrl}/auth/admin/patients/${patientID}/inactivate`,
           {},
           { headers: { Authorization: `Bearer ${token}` } }
         );
         fetchPatients();
       } catch (error) {
-        console.error('Error inactivating patient:', error);
+        console.error("Error inactivating patient:", error);
       }
     }
   };
 
   const handleReactivatePatient = async (patientID) => {
-    const confirmReactivate = window.confirm('Are you sure you want to reactivate this patient?');
+    const confirmReactivate = window.confirm(
+      "Are you sure you want to reactivate this patient?"
+    );
     if (confirmReactivate) {
       try {
         await axios.put(
-          `http://localhost:3000/auth/admin/patients/${patientID}/reactivate`,
+          `${envConfig.apiUrl}http://localhost:/auth/admin/patients/${patientID}/reactivate`,
           {},
           { headers: { Authorization: `Bearer ${token}` } }
         );
         fetchPatients();
       } catch (error) {
-        console.error('Error reactivating patient:', error);
+        console.error("Error reactivating patient:", error);
       }
     }
   };
 
   const calculateAge = (dateOfBirth) => {
-    if (!dateOfBirth) return 'N/A';
+    if (!dateOfBirth) return "N/A";
     const dob = new Date(dateOfBirth);
-    if (isNaN(dob)) return 'N/A';
+    if (isNaN(dob)) return "N/A";
     const diffMs = Date.now() - dob.getTime();
     const ageDate = new Date(diffMs);
     return Math.abs(ageDate.getUTCFullYear() - 1970);
@@ -82,12 +88,14 @@ const PatientsTable = ({ patients, fetchPatients, token }) => {
               <td className="py-2 px-4">
                 {patient.dateOfBirth
                   ? new Date(patient.dateOfBirth).toLocaleDateString()
-                  : 'N/A'}
+                  : "N/A"}
               </td>
               <td className="py-2 px-4">{calculateAge(patient.dateOfBirth)}</td>
               <td className="py-2 px-4">{patient.phoneNumber}</td>
               <td className="py-2 px-4">{patient.email}</td>
-              <td className="py-2 px-4">{patient.Inactive === 0 ? 'Yes' : 'No'}</td>
+              <td className="py-2 px-4">
+                {patient.Inactive === 0 ? "Yes" : "No"}
+              </td>
               <td className="py-2 px-4">
                 <button
                   onClick={() => handleMoreClick(patient)}
@@ -116,7 +124,10 @@ const PatientsTable = ({ patients, fetchPatients, token }) => {
         </tbody>
       </table>
       {showModal && selectedPatient && (
-        <PatientDetailsModal patient={selectedPatient} onClose={handleCloseModal} />
+        <PatientDetailsModal
+          patient={selectedPatient}
+          onClose={handleCloseModal}
+        />
       )}
     </div>
   );

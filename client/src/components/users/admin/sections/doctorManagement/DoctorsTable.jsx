@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import DoctorDetailsModal from './DoctorDetailsModal.jsx';
-import axios from 'axios';
+import React, { useState } from "react";
+import DoctorDetailsModal from "./DoctorDetailsModal.jsx";
+import axios from "axios";
+
+import envConfig from "../../../../../envConfig.js";
 
 const DoctorsTable = ({ doctors, fetchDoctors, token }) => {
   const [selectedDoctor, setSelectedDoctor] = useState(null);
@@ -17,42 +19,46 @@ const DoctorsTable = ({ doctors, fetchDoctors, token }) => {
   };
 
   const handleInactivateDoctor = async (doctorID) => {
-    const confirmInactivate = window.confirm('Are you sure you want to inactivate this doctor?');
+    const confirmInactivate = window.confirm(
+      "Are you sure you want to inactivate this doctor?"
+    );
     if (confirmInactivate) {
       try {
         await axios.put(
-          `http://localhost:3000/auth/admin/doctors/${doctorID}/inactivate`,
+          `${envConfig.apiUrl}/auth/admin/doctors/${doctorID}/inactivate`,
           {},
           { headers: { Authorization: `Bearer ${token}` } }
         );
         fetchDoctors();
       } catch (error) {
-        console.error('Error inactivating doctor:', error);
+        console.error("Error inactivating doctor:", error);
       }
     }
   };
 
   // **New function to handle reactivation**
   const handleReactivateDoctor = async (doctorID) => {
-    const confirmReactivate = window.confirm('Are you sure you want to reactivate this doctor?');
+    const confirmReactivate = window.confirm(
+      "Are you sure you want to reactivate this doctor?"
+    );
     if (confirmReactivate) {
       try {
         await axios.put(
-          `http://localhost:3000/auth/admin/doctors/${doctorID}/reactivate`,
+          `${envConfig.apiUrl}/auth/admin/doctors/${doctorID}/reactivate`,
           {},
           { headers: { Authorization: `Bearer ${token}` } }
         );
         fetchDoctors();
       } catch (error) {
-        console.error('Error reactivating doctor:', error);
+        console.error("Error reactivating doctor:", error);
       }
     }
   };
 
   const calculateAge = (dateOfBirth) => {
-    if (!dateOfBirth) return 'N/A';
+    if (!dateOfBirth) return "N/A";
     const dob = new Date(dateOfBirth);
-    if (isNaN(dob)) return 'N/A';
+    if (isNaN(dob)) return "N/A";
     const diffMs = Date.now() - dob.getTime();
     const ageDate = new Date(diffMs);
     return Math.abs(ageDate.getUTCFullYear() - 1970);
@@ -86,14 +92,16 @@ const DoctorsTable = ({ doctors, fetchDoctors, token }) => {
               <td className="py-2 px-4">
                 {doctor.dateOfBirth
                   ? new Date(doctor.dateOfBirth).toLocaleDateString()
-                  : 'N/A'}
+                  : "N/A"}
               </td>
               <td className="py-2 px-4">{calculateAge(doctor.dateOfBirth)}</td>
               <td className="py-2 px-4">{doctor.workPhoneNumber}</td>
               <td className="py-2 px-4">{doctor.workEmail}</td>
-              <td className="py-2 px-4">{doctor.specialtyName || 'N/A'}</td>
-              <td className="py-2 px-4">{doctor.officeName || 'N/A'}</td>
-              <td className="py-2 px-4">{doctor.Inactive === 0 ? 'Yes' : 'No'}</td>
+              <td className="py-2 px-4">{doctor.specialtyName || "N/A"}</td>
+              <td className="py-2 px-4">{doctor.officeName || "N/A"}</td>
+              <td className="py-2 px-4">
+                {doctor.Inactive === 0 ? "Yes" : "No"}
+              </td>
               <td className="py-2 px-4">
                 <button
                   onClick={() => handleMoreClick(doctor)}
@@ -122,7 +130,10 @@ const DoctorsTable = ({ doctors, fetchDoctors, token }) => {
         </tbody>
       </table>
       {showModal && selectedDoctor && (
-        <DoctorDetailsModal doctor={selectedDoctor} onClose={handleCloseModal} />
+        <DoctorDetailsModal
+          doctor={selectedDoctor}
+          onClose={handleCloseModal}
+        />
       )}
     </div>
   );
