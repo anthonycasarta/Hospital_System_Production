@@ -1,16 +1,15 @@
-// src/components/users/admin/sections/SystemReports.jsx
+// SystemReports.jsx
 
 import React, { useState, useEffect, useMemo } from "react";
 import Select from "react-select";
 import { FileText } from "lucide-react"; // Example icon, adjust as needed
-
-import envConfig from "../../../envConfig";
 import axios from "axios";
+import envConfig from "../../../../envConfig"; // Adjust the path as necessary
 
 const SystemReports = () => {
   const [officeLocations, setOfficeLocations] = useState([]);
   const [specialties, setSpecialties] = useState([]);
-  const [genders, setGenders] = useState([
+  const [genders] = useState([
     { value: "Male", label: "Male" },
     { value: "Female", label: "Female" },
     { value: "Other", label: "Other" },
@@ -35,92 +34,89 @@ const SystemReports = () => {
   const [sortOption, setSortOption] = useState("");
 
   useEffect(() => {
+    console.log("API URL:", envConfig.apiUrl); // Debugging Line
     const token = localStorage.getItem("token");
 
-    const fetch = async () => {
-      // Fetch Office Locations
-      await axios
-        .get(
+    const fetchData = async () => {
+      try {
+        // Fetch Office Locations
+        const officeRes = await axios.get(
           `${envConfig.apiUrl}/auth/admin/adminDoctorReport/getOfficeLocations`,
           {
             headers: {
-              withCredentials: true,
               Authorization: `Bearer ${token}`,
             },
           }
-        )
-        .then((res) => res.json())
-        .then((data) => setOfficeLocations(data))
-        .catch((err) => console.error("Fetch error:", err));
+        );
+        setOfficeLocations(officeRes.data);
 
-      // Fetch Specialties
-      await axios
-        .get(
+        // Fetch Specialties
+        const specialtiesRes = await axios.get(
           `${envConfig.apiUrl}/auth/admin/adminDoctorReport/getSpecialties`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }
-        )
-        .then((res) => res.json())
-        .then((data) => setSpecialties(data))
-        .catch((err) => console.error("Fetch error:", err));
+        );
+        setSpecialties(specialtiesRes.data);
 
-      // Fetch States
-      await axios
-        .get(`${envConfig.apiUrl}/auth/admin/adminDoctorReport/getStates`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((res) => res.json())
-        .then((data) => setStates(data))
-        .catch((err) => console.error("Fetch error:", err));
-
-      // Fetch Cities
-      await axios
-        .get(`${envConfig.apiUrl}/auth/admin/adminDoctorReport/getCities`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((res) => res.json())
-        .then((data) => setCities(data))
-        .catch((err) => console.error("Fetch error:", err));
-
-      // Fetch Doctors with Debugging
-      await axios
-        .get(`${envConfig.apiUrl}/auth/admin/adminDoctorReport/getDoctors`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log("Fetched Doctors Data:", data); // Debugging Line
-
-          // **Adjust based on data structure**
-          if (Array.isArray(data)) {
-            // If data is an array directly
-            setDoctors(data);
-          } else if (data.doctors && Array.isArray(data.doctors)) {
-            // If doctors are nested within an object
-            setDoctors(data.doctors);
-          } else if (data.length === 0) {
-            // If data is an empty array or undefined
-            setDoctors([]);
-          } else {
-            // Handle other unexpected structures
-            console.warn("Unexpected doctors data structure:", data);
-            setDoctors([]);
+        // Fetch States
+        const statesRes = await axios.get(
+          `${envConfig.apiUrl}/auth/admin/adminDoctorReport/getStates`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           }
-        })
-        .catch((err) => console.error("Fetch error:", err));
+        );
+        setStates(statesRes.data);
+
+        // Fetch Cities
+        const citiesRes = await axios.get(
+          `${envConfig.apiUrl}/auth/admin/adminDoctorReport/getCities`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setCities(citiesRes.data);
+
+        // Fetch Doctors with Debugging
+        const doctorsRes = await axios.get(
+          `${envConfig.apiUrl}/auth/admin/adminDoctorReport/getDoctors`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        console.log("Fetched Doctors Data:", doctorsRes.data); // Debugging Line
+
+        if (Array.isArray(doctorsRes.data)) {
+          setDoctors(doctorsRes.data);
+        } else if (
+          doctorsRes.data.doctors &&
+          Array.isArray(doctorsRes.data.doctors)
+        ) {
+          setDoctors(doctorsRes.data.doctors);
+        } else if (doctorsRes.data.length === 0) {
+          setDoctors([]);
+        } else {
+          console.warn("Unexpected doctors data structure:", doctorsRes.data);
+          setDoctors([]);
+        }
+      } catch (error) {
+        console.error("Fetch error:", error);
+      }
     };
+
+    fetchData();
   }, []);
 
-  const handleGenerateReport = () => {
+  const handleGenerateReport = async () => {
     const token = localStorage.getItem("token");
     const params = new URLSearchParams();
 
@@ -149,19 +145,21 @@ const SystemReports = () => {
       params.append("endDate", endDate);
     }
 
-    fetch(
-      `${
-        envConfig.apiUrl
-      }/auth/admin/adminDoctorReport/generateDoctorReport?${params.toString()}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => setReportData(data))
-      .catch((err) => console.error("Fetch error:", err));
+    try {
+      const response = await axios.get(
+        `${
+          envConfig.apiUrl
+        }/auth/admin/adminDoctorReport/generateDoctorReport?${params.toString()}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setReportData(response.data);
+    } catch (error) {
+      console.error("Fetch error:", error);
+    }
   };
 
   const toggleDoctorDetails = (doctorID) => {
@@ -193,19 +191,19 @@ const SystemReports = () => {
 
   // **Aggregate Data Calculations**
   const totalPrescriptions = reportData.reduce(
-    (acc, doctor) => acc + doctor.prescriptions.length,
+    (acc, doctor) => acc + (doctor.prescriptions?.length || 0),
     0
   );
 
   const totalAppointments = reportData.reduce(
-    (acc, doctor) => acc.concat(doctor.appointments),
+    (acc, doctor) => acc.concat(doctor.appointments || []),
     []
   );
 
   const appointmentStatusCounts = totalAppointments.reduce(
     (acc, appointment) => {
       const status = appointment.status;
-      if (acc[status]) {
+      if (acc[status] !== undefined) {
         acc[status] += 1;
       } else {
         acc[status] = 1;
@@ -224,21 +222,29 @@ const SystemReports = () => {
     sortedData.sort((a, b) => {
       switch (sortOption) {
         case "prescriptionCount":
-          return b.prescriptions.length - a.prescriptions.length;
+          return (
+            (b.prescriptions?.length || 0) - (a.prescriptions?.length || 0)
+          );
         case "scheduledAppointments":
           return (
-            b.appointments.filter((a) => a.status === "Scheduled").length -
-            a.appointments.filter((a) => a.status === "Scheduled").length
+            (b.appointments?.filter((a) => a.status === "Scheduled").length ||
+              0) -
+            (a.appointments?.filter((a) => a.status === "Scheduled").length ||
+              0)
           );
         case "requestedAppointments":
           return (
-            b.appointments.filter((a) => a.status === "Requested").length -
-            a.appointments.filter((a) => a.status === "Requested").length
+            (b.appointments?.filter((a) => a.status === "Requested").length ||
+              0) -
+            (a.appointments?.filter((a) => a.status === "Requested").length ||
+              0)
           );
         case "completedAppointments":
           return (
-            b.appointments.filter((a) => a.status === "Completed").length -
-            a.appointments.filter((a) => a.status === "Completed").length
+            (b.appointments?.filter((a) => a.status === "Completed").length ||
+              0) -
+            (a.appointments?.filter((a) => a.status === "Completed").length ||
+              0)
           );
         default:
           return 0;
@@ -311,7 +317,10 @@ const SystemReports = () => {
               </label>
               <Select
                 isMulti
-                options={states}
+                options={states.map((state) => ({
+                  value: state,
+                  label: state,
+                }))}
                 value={selectedStates}
                 onChange={setSelectedStates}
               />
@@ -322,7 +331,10 @@ const SystemReports = () => {
               </label>
               <Select
                 isMulti
-                options={cities}
+                options={cities.map((city) => ({
+                  value: city,
+                  label: city,
+                }))}
                 value={selectedCities}
                 onChange={setSelectedCities}
               />
@@ -333,7 +345,10 @@ const SystemReports = () => {
               </label>
               <Select
                 isMulti
-                options={doctors} // Use the fetched data directly
+                options={doctors.map((doctor) => ({
+                  value: doctor.doctorID,
+                  label: `${doctor.firstName} ${doctor.lastName}`,
+                }))}
                 value={selectedDoctors}
                 onChange={setSelectedDoctors}
                 placeholder="Select Doctors..."
@@ -454,9 +469,10 @@ const SystemReports = () => {
                   "Requested",
                   "Completed",
                 ].reduce((acc, status) => {
-                  acc[status] = doctor.appointments.filter(
-                    (a) => a.status === status
-                  ).length;
+                  acc[status] = doctor.appointments
+                    ? doctor.appointments.filter((a) => a.status === status)
+                        .length
+                    : 0;
                   return acc;
                 }, {});
 
@@ -510,7 +526,7 @@ const SystemReports = () => {
                           Total Prescriptions:
                         </p>
                         <p className="text-lg font-bold text-gray-900">
-                          {doctor.prescriptions.length}
+                          {doctor.prescriptions?.length || 0}
                         </p>
                       </div>
                       <div>
@@ -543,10 +559,11 @@ const SystemReports = () => {
                         {/* Appointment Details */}
                         {["Scheduled", "Requested", "Completed"].map(
                           (status) => {
-                            const filteredAppointments =
-                              doctor.appointments.filter(
-                                (appointment) => appointment.status === status
-                              );
+                            const filteredAppointments = doctor.appointments
+                              ? doctor.appointments.filter(
+                                  (appointment) => appointment.status === status
+                                )
+                              : [];
 
                             return (
                               filteredAppointments.length > 0 && (
@@ -577,7 +594,7 @@ const SystemReports = () => {
                             Prescriptions:
                           </h4>
                           <ul className="list-disc list-inside">
-                            {doctor.prescriptions.map((prescription) => (
+                            {doctor.prescriptions?.map((prescription) => (
                               <li key={prescription.prescriptionID}>
                                 {formatDateTime(prescription.dateIssued)} -{" "}
                                 {prescription.medicationName},{" "}
