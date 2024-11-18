@@ -99,6 +99,7 @@ export async function getPrescriptionReport(req, res) {
   try {
     console.log(req.query);
     const { filters, activeTab } = req.query;
+
     const prescriptions = filters.prescriptions;
     const refills = filters.refills;
 
