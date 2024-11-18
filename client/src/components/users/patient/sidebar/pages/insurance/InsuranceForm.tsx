@@ -82,6 +82,7 @@ export default function InsuranceForm() {
         `${envConfig.apiUrl}/auth/patient/insurance`,
         formData,
         {
+          withCredentials: true,
           headers: {
             Authorization: `Bearer ${token}`,
           },
