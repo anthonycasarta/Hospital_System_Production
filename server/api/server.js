@@ -12,11 +12,30 @@ import dataFetchRouter from "../routers/dataFetch.js";
 const app = express();
 
 // CORS options configuration
+// const corsOptions = {
+//   origin:
+//     process.env.NODE_ENV !== "production"
+//       ? "http://localhost:5173"
+//       : "https://hospital-system-production.vercel.app", // Allow your frontend's origin
+//   methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
+//   credentials: true, // Allow credentials such as cookies or headers
+//   allowedHeaders: ["Content-Type", "Authorization"], // Allow specific headers
+// };
+
 const corsOptions = {
-  origin:
-    process.env.NODE_ENV !== "production"
-      ? "http://localhost:5173"
-      : "https://hospital-system-production.vercel.app", // Allow your frontend's origin
+  origin: (origin, callback) => {
+    const allowedOrigins = [
+      "http://localhost:5173", // Local development frontend
+      "https://hospital-system-production.vercel.app", // Production frontend
+    ];
+
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
   credentials: true, // Allow credentials such as cookies or headers
   allowedHeaders: ["Content-Type", "Authorization"], // Allow specific headers
