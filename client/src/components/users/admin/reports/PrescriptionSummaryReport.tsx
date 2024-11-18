@@ -86,6 +86,9 @@ export default function PrescriptionSummaryReport() {
     const fetchPrescriptions = async () => {
       try {
         const token = localStorage.getItem("token");
+        if (!token) {
+          throw new Error("No token found");
+        }
         console.log("filters: ", filters);
         const response = await axios.get(
           `${envConfig.apiUrl}/auth/admin/get-prescription-report`,
