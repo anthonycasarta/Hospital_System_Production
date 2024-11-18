@@ -1,17 +1,19 @@
 // src/components/users/admin/sections/SystemReports.jsx
 
-import React, { useState, useEffect, useMemo } from 'react';
-import Select from 'react-select';
-import { FileText } from 'lucide-react'; // Example icon, adjust as needed
+import React, { useState, useEffect, useMemo } from "react";
+import Select from "react-select";
+import { FileText } from "lucide-react"; // Example icon, adjust as needed
+
+import envConfig from "../../../envConfig";
 
 const SystemReports = () => {
   const [officeLocations, setOfficeLocations] = useState([]);
   const [specialties, setSpecialties] = useState([]);
   const [genders, setGenders] = useState([
-    { value: 'Male', label: 'Male' },
-    { value: 'Female', label: 'Female' },
-    { value: 'Other', label: 'Other' },
-    { value: 'Prefer not to say', label: 'Prefer not to say' },
+    { value: "Male", label: "Male" },
+    { value: "Female", label: "Female" },
+    { value: "Other", label: "Other" },
+    { value: "Prefer not to say", label: "Prefer not to say" },
   ]);
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
@@ -23,28 +25,32 @@ const SystemReports = () => {
   const [selectedStates, setSelectedStates] = useState([]);
   const [selectedCities, setSelectedCities] = useState([]);
   const [selectedDoctors, setSelectedDoctors] = useState([]);
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [reportData, setReportData] = useState([]);
   const [expandedDoctors, setExpandedDoctors] = useState({});
 
   // **New State for Sorting**
-  const [sortOption, setSortOption] = useState('');
+  const [sortOption, setSortOption] = useState("");
 
-  const API_BASE_URL = 'http://localhost:3000';
+  const API_BASE_URL = "http://localhost:3000";
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
 
     // Fetch Office Locations
-    fetch(`${API_BASE_URL}/auth/admin/adminDoctorReport/getOfficeLocations`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    fetch(
+      `${envConfig.apiUrl}/auth/admin/adminDoctorReport/getOfficeLocations`,
+      {
+        headers: {
+          withCredentials: true,
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
       .then((res) => res.json())
       .then((data) => setOfficeLocations(data))
-      .catch((err) => console.error('Fetch error:', err));
+      .catch((err) => console.error("Fetch error:", err));
 
     // Fetch Specialties
     fetch(`${API_BASE_URL}/auth/admin/adminDoctorReport/getSpecialties`, {
@@ -54,7 +60,7 @@ const SystemReports = () => {
     })
       .then((res) => res.json())
       .then((data) => setSpecialties(data))
-      .catch((err) => console.error('Fetch error:', err));
+      .catch((err) => console.error("Fetch error:", err));
 
     // Fetch States
     fetch(`${API_BASE_URL}/auth/admin/adminDoctorReport/getStates`, {
@@ -64,7 +70,7 @@ const SystemReports = () => {
     })
       .then((res) => res.json())
       .then((data) => setStates(data))
-      .catch((err) => console.error('Fetch error:', err));
+      .catch((err) => console.error("Fetch error:", err));
 
     // Fetch Cities
     fetch(`${API_BASE_URL}/auth/admin/adminDoctorReport/getCities`, {
@@ -74,7 +80,7 @@ const SystemReports = () => {
     })
       .then((res) => res.json())
       .then((data) => setCities(data))
-      .catch((err) => console.error('Fetch error:', err));
+      .catch((err) => console.error("Fetch error:", err));
 
     // Fetch Doctors with Debugging
     fetch(`${API_BASE_URL}/auth/admin/adminDoctorReport/getDoctors`, {
@@ -102,46 +108,49 @@ const SystemReports = () => {
           setDoctors([]);
         }
       })
-      .catch((err) => console.error('Fetch error:', err));
+      .catch((err) => console.error("Fetch error:", err));
   }, []);
 
   const handleGenerateReport = () => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     const params = new URLSearchParams();
 
     selectedOffices.forEach((office) => {
-      params.append('officeID', office.value);
+      params.append("officeID", office.value);
     });
     selectedSpecialties.forEach((specialty) => {
-      params.append('specialtyID', specialty.value);
+      params.append("specialtyID", specialty.value);
     });
     selectedGenders.forEach((gender) => {
-      params.append('gender', gender.value);
+      params.append("gender", gender.value);
     });
     selectedStates.forEach((state) => {
-      params.append('state', state.value);
+      params.append("state", state.value);
     });
     selectedCities.forEach((city) => {
-      params.append('city', city.value);
+      params.append("city", city.value);
     });
     selectedDoctors.forEach((doctor) => {
-      params.append('doctorID', doctor.value);
+      params.append("doctorID", doctor.value);
     });
     if (startDate) {
-      params.append('startDate', startDate);
+      params.append("startDate", startDate);
     }
     if (endDate) {
-      params.append('endDate', endDate);
+      params.append("endDate", endDate);
     }
 
-    fetch(`${API_BASE_URL}/auth/admin/adminDoctorReport/generateDoctorReport?${params.toString()}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    fetch(
+      `${API_BASE_URL}/auth/admin/adminDoctorReport/generateDoctorReport?${params.toString()}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
       .then((res) => res.json())
       .then((data) => setReportData(data))
-      .catch((err) => console.error('Fetch error:', err));
+      .catch((err) => console.error("Fetch error:", err));
   };
 
   const toggleDoctorDetails = (doctorID) => {
@@ -153,11 +162,11 @@ const SystemReports = () => {
 
   const formatDateTime = (dateTime) =>
     new Date(dateTime).toLocaleString(undefined, {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "numeric",
       hour12: true,
     });
 
@@ -168,7 +177,7 @@ const SystemReports = () => {
     if (addrcity) addressParts.push(addrcity);
     if (addrstate) addressParts.push(addrstate);
     if (addrzip) addressParts.push(addrzip);
-    return addressParts.join(', ');
+    return addressParts.join(", ");
   };
 
   // **Aggregate Data Calculations**
@@ -203,22 +212,22 @@ const SystemReports = () => {
 
     sortedData.sort((a, b) => {
       switch (sortOption) {
-        case 'prescriptionCount':
+        case "prescriptionCount":
           return b.prescriptions.length - a.prescriptions.length;
-        case 'scheduledAppointments':
+        case "scheduledAppointments":
           return (
-            b.appointments.filter((a) => a.status === 'Scheduled').length -
-            a.appointments.filter((a) => a.status === 'Scheduled').length
+            b.appointments.filter((a) => a.status === "Scheduled").length -
+            a.appointments.filter((a) => a.status === "Scheduled").length
           );
-        case 'requestedAppointments':
+        case "requestedAppointments":
           return (
-            b.appointments.filter((a) => a.status === 'Requested').length -
-            a.appointments.filter((a) => a.status === 'Requested').length
+            b.appointments.filter((a) => a.status === "Requested").length -
+            a.appointments.filter((a) => a.status === "Requested").length
           );
-        case 'completedAppointments':
+        case "completedAppointments":
           return (
-            b.appointments.filter((a) => a.status === 'Completed').length -
-            a.appointments.filter((a) => a.status === 'Completed').length
+            b.appointments.filter((a) => a.status === "Completed").length -
+            a.appointments.filter((a) => a.status === "Completed").length
           );
         default:
           return 0;
@@ -232,18 +241,24 @@ const SystemReports = () => {
     <div className="min-h-screen bg-pink-50 flex flex-col">
       <header className="px-4 lg:px-6 h-16 flex items-center border-b bg-white">
         <div className="flex items-center justify-center">
-          <span className="ml-2 text-2xl font-bold text-gray-900">Doctor Appointment Data</span>
+          <span className="ml-2 text-2xl font-bold text-gray-900">
+            Doctor Appointment Data
+          </span>
         </div>
       </header>
       <main className="flex-1 p-4">
         <div className="max-w-6xl mx-auto space-y-8">
           <div className="text-center">
-            <h1 className="text-3xl font-extrabold text-gray-900">Doctor Report</h1>
+            <h1 className="text-3xl font-extrabold text-gray-900">
+              Doctor Report
+            </h1>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {/* Filters */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">Office Locations</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Office Locations
+              </label>
               <Select
                 isMulti
                 options={officeLocations.map((office) => ({
@@ -255,7 +270,9 @@ const SystemReports = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Specialties</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Specialties
+              </label>
               <Select
                 isMulti
                 options={specialties.map((specialty) => ({
@@ -267,11 +284,20 @@ const SystemReports = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Genders</label>
-              <Select isMulti options={genders} value={selectedGenders} onChange={setSelectedGenders} />
+              <label className="block text-sm font-medium text-gray-700">
+                Genders
+              </label>
+              <Select
+                isMulti
+                options={genders}
+                value={selectedGenders}
+                onChange={setSelectedGenders}
+              />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">States</label>
+              <label className="block text-sm font-medium text-gray-700">
+                States
+              </label>
               <Select
                 isMulti
                 options={states}
@@ -280,7 +306,9 @@ const SystemReports = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Cities</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Cities
+              </label>
               <Select
                 isMulti
                 options={cities}
@@ -289,7 +317,9 @@ const SystemReports = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Doctors</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Doctors
+              </label>
               <Select
                 isMulti
                 options={doctors} // Use the fetched data directly
@@ -300,7 +330,9 @@ const SystemReports = () => {
             </div>
             {/* Date Filters */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">Start Date</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Start Date
+              </label>
               <input
                 type="date"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-pink-300 focus:ring focus:ring-pink-200 focus:ring-opacity-50"
@@ -309,7 +341,9 @@ const SystemReports = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">End Date</label>
+              <label className="block text-sm font-medium text-gray-700">
+                End Date
+              </label>
               <input
                 type="date"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-pink-300 focus:ring focus:ring-pink-200 focus:ring-opacity-50"
@@ -322,7 +356,10 @@ const SystemReports = () => {
           {/* **New Sorting Component** */}
           {reportData.length > 0 && (
             <div className="flex justify-end items-center">
-              <label htmlFor="sort" className="mr-2 text-sm font-medium text-gray-700">
+              <label
+                htmlFor="sort"
+                className="mr-2 text-sm font-medium text-gray-700"
+              >
                 Sort By:
               </label>
               <select
@@ -333,9 +370,15 @@ const SystemReports = () => {
               >
                 <option value="">None</option>
                 <option value="prescriptionCount">Prescription Count</option>
-                <option value="scheduledAppointments">Scheduled Appointments</option>
-                <option value="requestedAppointments">Requested Appointments</option>
-                <option value="completedAppointments">Completed Appointments</option>
+                <option value="scheduledAppointments">
+                  Scheduled Appointments
+                </option>
+                <option value="requestedAppointments">
+                  Requested Appointments
+                </option>
+                <option value="completedAppointments">
+                  Completed Appointments
+                </option>
               </select>
             </div>
           )}
@@ -350,26 +393,38 @@ const SystemReports = () => {
           {/* Aggregate Data Display */}
           {reportData.length > 0 && (
             <div className="bg-white p-6 rounded-lg shadow-md mt-8">
-              <h2 className="text-2xl font-bold mb-4 text-center">Aggregate Summary</h2>
+              <h2 className="text-2xl font-bold mb-4 text-center">
+                Aggregate Summary
+              </h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="text-center">
-                  <p className="text-sm font-medium text-gray-600">Total Prescriptions</p>
-                  <p className="text-3xl font-bold text-gray-900">{totalPrescriptions}</p>
+                  <p className="text-sm font-medium text-gray-600">
+                    Total Prescriptions
+                  </p>
+                  <p className="text-3xl font-bold text-gray-900">
+                    {totalPrescriptions}
+                  </p>
                 </div>
                 <div className="text-center">
-                  <p className="text-sm font-medium text-gray-600">Scheduled Appointments</p>
+                  <p className="text-sm font-medium text-gray-600">
+                    Scheduled Appointments
+                  </p>
                   <p className="text-3xl font-bold text-gray-900">
                     {appointmentStatusCounts.Scheduled || 0}
                   </p>
                 </div>
                 <div className="text-center">
-                  <p className="text-sm font-medium text-gray-600">Requested Appointments</p>
+                  <p className="text-sm font-medium text-gray-600">
+                    Requested Appointments
+                  </p>
                   <p className="text-3xl font-bold text-gray-900">
                     {appointmentStatusCounts.Requested || 0}
                   </p>
                 </div>
                 <div className="text-center">
-                  <p className="text-sm font-medium text-gray-600">Completed Appointments</p>
+                  <p className="text-sm font-medium text-gray-600">
+                    Completed Appointments
+                  </p>
                   <p className="text-3xl font-bold text-gray-900">
                     {appointmentStatusCounts.Completed || 0}
                   </p>
@@ -383,13 +438,16 @@ const SystemReports = () => {
             <div className="bg-white p-6 rounded-lg shadow-md mt-8">
               <h2 className="text-2xl font-bold mb-4">Report Results</h2>
               {sortedReportData.map((doctor) => {
-                const appointmentCounts = ['Scheduled', 'Requested', 'Completed'].reduce(
-                  (acc, status) => {
-                    acc[status] = doctor.appointments.filter((a) => a.status === status).length;
-                    return acc;
-                  },
-                  {}
-                );
+                const appointmentCounts = [
+                  "Scheduled",
+                  "Requested",
+                  "Completed",
+                ].reduce((acc, status) => {
+                  acc[status] = doctor.appointments.filter(
+                    (a) => a.status === status
+                  ).length;
+                  return acc;
+                }, {});
 
                 return (
                   <div
@@ -402,22 +460,27 @@ const SystemReports = () => {
                           {doctor.firstName} {doctor.lastName}
                         </h3>
                         <p className="text-sm text-gray-600">
-                          Specialty:{' '}
-                          <span className="font-medium">{doctor.specialtyName || 'N/A'}</span>
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          Gender: <span className="font-medium">{doctor.gender || 'N/A'}</span>
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          Office:{' '}
+                          Specialty:{" "}
                           <span className="font-medium">
-                            {doctor.officeName || 'Unknown Office'}
+                            {doctor.specialtyName || "N/A"}
                           </span>
                         </p>
                         <p className="text-sm text-gray-600">
-                          Address:{' '}
+                          Gender:{" "}
                           <span className="font-medium">
-                            {formatAddress(doctor) || 'Unknown Address'}
+                            {doctor.gender || "N/A"}
+                          </span>
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          Office:{" "}
+                          <span className="font-medium">
+                            {doctor.officeName || "Unknown Office"}
+                          </span>
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          Address:{" "}
+                          <span className="font-medium">
+                            {formatAddress(doctor) || "Unknown Address"}
                           </span>
                         </p>
                       </div>
@@ -425,30 +488,40 @@ const SystemReports = () => {
                         onClick={() => toggleDoctorDetails(doctor.doctorID)}
                         className="text-pink-600 hover:text-pink-800 flex items-center"
                       >
-                        {expandedDoctors[doctor.doctorID] ? 'Hide Details' : 'Show Details'}
+                        {expandedDoctors[doctor.doctorID]
+                          ? "Hide Details"
+                          : "Show Details"}
                       </button>
                     </div>
                     <div className="mt-4 grid grid-cols-2 gap-4">
                       <div>
-                        <p className="text-sm font-medium text-gray-600">Total Prescriptions:</p>
+                        <p className="text-sm font-medium text-gray-600">
+                          Total Prescriptions:
+                        </p>
                         <p className="text-lg font-bold text-gray-900">
                           {doctor.prescriptions.length}
                         </p>
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-gray-600">Scheduled Appointments:</p>
+                        <p className="text-sm font-medium text-gray-600">
+                          Scheduled Appointments:
+                        </p>
                         <p className="text-lg font-bold text-gray-900">
                           {appointmentCounts.Scheduled || 0}
                         </p>
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-gray-600">Requested Appointments:</p>
+                        <p className="text-sm font-medium text-gray-600">
+                          Requested Appointments:
+                        </p>
                         <p className="text-lg font-bold text-gray-900">
                           {appointmentCounts.Requested || 0}
                         </p>
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-gray-600">Completed Appointments:</p>
+                        <p className="text-sm font-medium text-gray-600">
+                          Completed Appointments:
+                        </p>
                         <p className="text-lg font-bold text-gray-900">
                           {appointmentCounts.Completed || 0}
                         </p>
@@ -457,37 +530,49 @@ const SystemReports = () => {
                     {expandedDoctors[doctor.doctorID] && (
                       <div className="mt-4 p-4 bg-gray-50 rounded-lg">
                         {/* Appointment Details */}
-                        {['Scheduled', 'Requested', 'Completed'].map((status) => {
-                          const filteredAppointments = doctor.appointments.filter(
-                            (appointment) => appointment.status === status
-                          );
+                        {["Scheduled", "Requested", "Completed"].map(
+                          (status) => {
+                            const filteredAppointments =
+                              doctor.appointments.filter(
+                                (appointment) => appointment.status === status
+                              );
 
-                          return (
-                            filteredAppointments.length > 0 && (
-                              <div key={status} className="mb-4">
-                                <h4 className="font-semibold text-lg">{status} Appointments:</h4>
-                                <ul className="list-disc list-inside">
-                                  {filteredAppointments.map((appointment) => (
-                                    <li key={appointment.appointmentID}>
-                                      {formatDateTime(appointment.appointmentDateTime)} -{' '}
-                                      {appointment.reason} ({appointment.patientFirstName}{' '}
-                                      {appointment.patientLastName})
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            )
-                          );
-                        })}
+                            return (
+                              filteredAppointments.length > 0 && (
+                                <div key={status} className="mb-4">
+                                  <h4 className="font-semibold text-lg">
+                                    {status} Appointments:
+                                  </h4>
+                                  <ul className="list-disc list-inside">
+                                    {filteredAppointments.map((appointment) => (
+                                      <li key={appointment.appointmentID}>
+                                        {formatDateTime(
+                                          appointment.appointmentDateTime
+                                        )}{" "}
+                                        - {appointment.reason} (
+                                        {appointment.patientFirstName}{" "}
+                                        {appointment.patientLastName})
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              )
+                            );
+                          }
+                        )}
                         {/* Prescription Details */}
                         <div>
-                          <h4 className="font-semibold text-lg">Prescriptions:</h4>
+                          <h4 className="font-semibold text-lg">
+                            Prescriptions:
+                          </h4>
                           <ul className="list-disc list-inside">
                             {doctor.prescriptions.map((prescription) => (
                               <li key={prescription.prescriptionID}>
-                                {formatDateTime(prescription.dateIssued)} -{' '}
-                                {prescription.medicationName}, {prescription.dosage} mg (
-                                {prescription.patientFirstName} {prescription.patientLastName})
+                                {formatDateTime(prescription.dateIssued)} -{" "}
+                                {prescription.medicationName},{" "}
+                                {prescription.dosage} mg (
+                                {prescription.patientFirstName}{" "}
+                                {prescription.patientLastName})
                               </li>
                             ))}
                           </ul>
