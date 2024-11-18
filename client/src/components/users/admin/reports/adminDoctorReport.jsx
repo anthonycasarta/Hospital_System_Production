@@ -4,6 +4,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import Select from "react-select";
 import { FileText } from "lucide-react"; // Example icon, adjust as needed
 import axios from "axios";
+
 import envConfig from "../../../../envConfig"; // Adjust the path as necessary
 
 const SystemReports = () => {
@@ -49,6 +50,7 @@ const SystemReports = () => {
           }
         );
         setOfficeLocations(officeRes.data);
+        console.log("Office Locations:", officeRes.data); // Debugging Line
 
         // Fetch Specialties
         const specialtiesRes = await axios.get(
@@ -60,6 +62,7 @@ const SystemReports = () => {
           }
         );
         setSpecialties(specialtiesRes.data);
+        console.log("Specialties:", specialtiesRes.data); // Debugging Line
 
         // Fetch States
         const statesRes = await axios.get(
@@ -71,6 +74,7 @@ const SystemReports = () => {
           }
         );
         setStates(statesRes.data);
+        console.log("States:", statesRes.data); // Debugging Line
 
         // Fetch Cities
         const citiesRes = await axios.get(
@@ -82,6 +86,7 @@ const SystemReports = () => {
           }
         );
         setCities(citiesRes.data);
+        console.log("Cities:", citiesRes.data); // Debugging Line
 
         // Fetch Doctors with Debugging
         const doctorsRes = await axios.get(
@@ -157,6 +162,7 @@ const SystemReports = () => {
         }
       );
       setReportData(response.data);
+      console.log("Report Data:", response.data); // Debugging Line
     } catch (error) {
       console.error("Fetch error:", error);
     }
