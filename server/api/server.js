@@ -61,8 +61,8 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to the Hospital System API!" });
 });
 // Local development: Start the server
-if (process.env.NODE_ENV !== "production") {
-  app.listen(PORT, () => {
-    console.log(`Server running locally on http://localhost:3000`);
-  });
-}
+// if (process.env.NODE_ENV !== "production") {
+//   app.listen(PORT, () => {
+//     console.log(`Server running locally on http://localhost:3000`);
+//   });
+// }
