@@ -21,7 +21,7 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-
+    console.log("vercel api: ", envConfig.apiUrl);
     try {
       const response = await axios.post(`${envConfig.apiUrl}/auth/login`, {
         email,
