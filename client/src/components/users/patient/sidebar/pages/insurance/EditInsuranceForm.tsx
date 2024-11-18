@@ -28,7 +28,10 @@ const fetchInsuranceData = async () => {
     // Fetch insurance information
     const response = await axios.get(
       `${envConfig.apiUrl}/auth/patient/insurance-info`,
+
       {
+        withCredentials: true,
+
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -182,6 +185,7 @@ export default function EditInsuranceForm() {
         `${envConfig.apiUrl}/auth/patient/update-insurance`,
         formData,
         {
+          withCredentials: true,
           headers: {
             Authorization: `Bearer ${token}`,
           },
