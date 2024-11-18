@@ -39,6 +39,7 @@ const fetchPersonalInfoData = async () => {
     const response = await axios.get(
       `${envConfig.apiUrl}/auth/patient/personal-info`,
       {
+        withCredentials: true,
         headers: {
           Authorization: `Bearer ${token}`,
         },
