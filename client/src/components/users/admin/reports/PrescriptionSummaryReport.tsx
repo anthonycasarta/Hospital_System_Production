@@ -94,7 +94,7 @@ export default function PrescriptionSummaryReport() {
           `${envConfig.apiUrl}/auth/admin/get-prescription-report`,
 
           {
-            params: [filters, activeTab],
+            params: { filters, activeTab },
             withCredentials: true,
             headers: {
               Authorization: `Bearer ${token}`,

@@ -98,8 +98,9 @@ const groupRequestsByMonth = (rows) => {
 export async function getPrescriptionReport(req, res) {
   try {
     console.log(req.query);
-    const { prescriptions, refills } = req.query[0];
-    const activeTab = req.query[1];
+    const { filters, activeTab } = req.query;
+    const prescriptions = filters.prescriptions;
+    const refills = filters.refills;
 
     let rows;
     let renamedRows;
