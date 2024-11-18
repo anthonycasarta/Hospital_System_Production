@@ -53,7 +53,7 @@ const SystemReports = () => {
       .catch((err) => console.error("Fetch error:", err));
 
     // Fetch Specialties
-    fetch(`${API_BASE_URL}/auth/admin/adminDoctorReport/getSpecialties`, {
+    fetch(`${envConfig.apiUrl}/auth/admin/adminDoctorReport/getSpecialties`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -63,7 +63,7 @@ const SystemReports = () => {
       .catch((err) => console.error("Fetch error:", err));
 
     // Fetch States
-    fetch(`${API_BASE_URL}/auth/admin/adminDoctorReport/getStates`, {
+    fetch(`${envConfig.apiUrl}/auth/admin/adminDoctorReport/getStates`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -73,7 +73,7 @@ const SystemReports = () => {
       .catch((err) => console.error("Fetch error:", err));
 
     // Fetch Cities
-    fetch(`${API_BASE_URL}/auth/admin/adminDoctorReport/getCities`, {
+    fetch(`${envConfig.apiUrl}/auth/admin/adminDoctorReport/getCities`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -83,7 +83,7 @@ const SystemReports = () => {
       .catch((err) => console.error("Fetch error:", err));
 
     // Fetch Doctors with Debugging
-    fetch(`${API_BASE_URL}/auth/admin/adminDoctorReport/getDoctors`, {
+    fetch(`${envConfig.apiUrl}/auth/admin/adminDoctorReport/getDoctors`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -141,7 +141,9 @@ const SystemReports = () => {
     }
 
     fetch(
-      `${API_BASE_URL}/auth/admin/adminDoctorReport/generateDoctorReport?${params.toString()}`,
+      `${
+        envConfig.apiUrl
+      }/auth/admin/adminDoctorReport/generateDoctorReport?${params.toString()}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
