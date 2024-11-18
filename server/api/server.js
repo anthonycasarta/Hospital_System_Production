@@ -1,13 +1,13 @@
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import fruitRouter from "./routers/edibles.js";
-import authRouter from "./routers/auth.js";
-import appointmentRouter from "./routers/appointment.js";
+import fruitRouter from "../routers/edibles.js";
+import authRouter from "../routers/auth.js";
+import appointmentRouter from "../routers/appointment.js";
 
-import "./sendEmails.js";
+import "../sendEmails.js";
 
-import dataFetchRouter from "./routers/dataFetch.js";
+import dataFetchRouter from "../routers/dataFetch.js";
 
 const app = express();
 
@@ -27,10 +27,10 @@ app.use(bodyParser.json()); // Parse JSON requests
 //app.options("*", cors(corsOptions)); // Handle preflight requests
 
 // Routes
-app.use("/api/edibles", fruitRouter);
-app.use("/api/auth", authRouter);
-app.use("/api/appointment", appointmentRouter);
-app.use("/api/dataFetch", dataFetchRouter);
+app.use("/edibles", fruitRouter);
+app.use("/auth", authRouter);
+app.use("/appointment", appointmentRouter);
+app.use("/dataFetch", dataFetchRouter);
 
 // Export the Express app as the Vercel function handler
 export default (req, res) => {
@@ -43,8 +43,7 @@ app.get("/", (req, res) => {
 });
 // Local development: Start the server
 if (process.env.NODE_ENV !== "production") {
-  const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
-    console.log(`Server running locally on http://localhost:${PORT}`);
+    console.log(`Server running locally on http://localhost:3000`);
   });
 }
