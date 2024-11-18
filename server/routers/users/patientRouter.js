@@ -7,7 +7,7 @@ import {
   postInsurance,
   hasInsuranceInfo,
   updateInsurance,
-} from "../../controllers/patient/patientInsuranceController.js";
+} from "../../api/controllers/patient/patientInsuranceController.js";
 import medicationRouter from "../subRouters/medicationRouter.js";
 import billingRouter from "../subRouters/billingRouter.js";
 import {

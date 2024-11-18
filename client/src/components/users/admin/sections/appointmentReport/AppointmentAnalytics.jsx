@@ -83,6 +83,7 @@ const AppointmentAnalytics = () => {
     // Fetch initial data for filters
     const fetchData = async () => {
       try {
+        console.log("token 2 good: ", token);
         const [
           statesRes,
           citiesRes,

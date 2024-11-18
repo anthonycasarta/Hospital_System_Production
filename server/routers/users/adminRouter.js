@@ -1,6 +1,6 @@
 import express from "express";
-import { registerDoctor } from "../../controllers/authController.js";
-import { getPrescriptionReport } from "../../controllers/admin/adminPrescriptionReport.js";
+import { registerDoctor } from "../../api/controllers/authController.js";
+import { getPrescriptionReport } from "../../api/controllers/admin/adminPrescriptionReport.js";
 import {
   getAppointmentAnalytics,
   getStates,
@@ -12,18 +12,18 @@ import {
   getVisitTypes,
   getSpecialties,
   getServices,
-} from "../../controllers/admin/appointmentAnalytics.js";
+} from "../../api/controllers/admin/appointmentAnalytics.js";
 import adminDoctorRouter from "../subRouters/AdminDoctorRouter.js";
 import {
   getAllDoctors,
   inactivateDoctor,
   reactivateDoctor,
-} from "../../controllers/admin/doctorAdminView.js";
+} from "../../api/controllers/admin/doctorAdminView.js";
 import {
   getAllPatients,
   inactivatePatient,
   reactivatePatient,
-} from "../../controllers/admin/patientAdminView.js";
+} from "../../api/controllers/admin/patientAdminView.js";
 import { verifyToken } from "../../middleware/auth.js";
 
 const router = express.Router();
