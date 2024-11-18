@@ -84,39 +84,40 @@ export default function PrescriptionSummaryReport() {
 
   const token = localStorage.getItem("token");
 
-  useEffect(() => {
-    const fetchPrescriptions = async () => {
-      try {
-        console.log("BEFORE");
+  const fetchPrescriptions = async () => {
+    try {
+      console.log("BEFORE");
 
-        console.log("token: ", token);
+      console.log("token: ", token);
 
-        if (!token) {
-          throw new Error("No token found");
-        }
-        console.log("filters: ", filters);
-        const response = await axios.get(
-          `${envConfig.apiUrl}/auth/admin/get-prescription-report`,
-
-          {
-            params: { filters: filters, activeTab: activeTab },
-            withCredentials: true,
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        console.log("response pres report: ", response.data.data);
-        setFilterOptions(response.data.data);
-        setPrescriptions(response.data.data);
-        setFilteredPrescriptions(response.data.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching prescriptions:", error);
-        setLoading(false);
+      if (!token) {
+        throw new Error("No token found");
       }
-    };
+      console.log("filters: ", filters);
+      const response = await axios.get(
+        `${envConfig.apiUrl}/auth/admin/get-prescription-report`,
+
+        {
+          params: { filters: filters, activeTab: activeTab },
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("response pres report: ", response.data.data);
+      setFilterOptions(response.data.data);
+      setPrescriptions(response.data.data);
+      setFilteredPrescriptions(response.data.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching prescriptions:", error);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchPrescriptions();
   }, [activeTab, filters]);
 
