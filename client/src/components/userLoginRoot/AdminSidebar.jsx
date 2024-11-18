@@ -23,7 +23,7 @@ import PrescriptionSummaryReport from "../users/admin/reports/PrescriptionSummar
 import AppointmentAnalytics from "../users/admin/sections/appointmentReport/AppointmentAnalytics";
 import DoctorReports from "../users/admin/reports/adminDoctorReport";
 import DoctorManagement from "../users/admin/sections/doctorManagement/doctorManagement";
-import PatientManagement from "../users/admin/sections/patientManagement/patientManagement";
+import PatientManagement from "../users/admin/sections/patientManagement/PatientManagement";
 
 export default function AdminSidebar() {
   const [activeTab, setActiveTab] = useState("dashboard");
