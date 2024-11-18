@@ -85,8 +85,11 @@ export default function PrescriptionSummaryReport() {
   useEffect(() => {
     const fetchPrescriptions = async () => {
       try {
+        console.log("BEFORE");
         const token = localStorage.getItem("token");
+
         console.log("token: ", token);
+
         if (!token) {
           throw new Error("No token found");
         }
