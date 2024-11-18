@@ -29,7 +29,7 @@ import { verifyToken } from "../../middleware/auth.js";
 const router = express.Router();
 
 router.post("/register", registerDoctor);
-router.get("/get-prescription-report", verifyToken, getPrescriptionReport);
+router.get("/get-prescription-report", getPrescriptionReport);
 router.get("/appointmentAnalytics", getAppointmentAnalytics);
 router.get("/states", getStates);
 router.get("/cities", getCities);
