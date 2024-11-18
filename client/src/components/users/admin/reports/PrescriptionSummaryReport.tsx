@@ -82,11 +82,12 @@ export default function PrescriptionSummaryReport() {
     },
   });
 
+  const token = localStorage.getItem("token");
+
   useEffect(() => {
     const fetchPrescriptions = async () => {
       try {
         console.log("BEFORE");
-        const token = localStorage.getItem("token");
 
         console.log("token: ", token);
 
