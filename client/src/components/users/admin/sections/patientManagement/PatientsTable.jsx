@@ -43,7 +43,7 @@ const PatientsTable = ({ patients, fetchPatients, token }) => {
     if (confirmReactivate) {
       try {
         await axios.put(
-          `${envConfig.apiUrl}http://localhost:/auth/admin/patients/${patientID}/reactivate`,
+          `${envConfig.apiUrl}/auth/admin/patients/${patientID}/reactivate`,
           {},
           { headers: { Authorization: `Bearer ${token}` } }
         );
