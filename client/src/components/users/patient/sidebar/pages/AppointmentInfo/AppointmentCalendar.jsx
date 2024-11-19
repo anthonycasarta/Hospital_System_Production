@@ -5,8 +5,8 @@ import axios from "axios";
 import { Calendar, Views } from "react-big-calendar";
 import { format, parse, startOfWeek, getDay } from "date-fns";
 import { dateFnsLocalizer } from "react-big-calendar";
-import "react-big-calendar/lib/css/react-big-calendar.css";
-import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
+// import "react-big-calendar/lib/css/react-big-calendar.css";
+// import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 
 import envConfig from "../../../../../../envConfig";
@@ -328,7 +328,8 @@ function AppointmentCalendar() {
               ).toLocaleString()}
             </p>
             <p>
-              <strong>Reason:</strong> {selectedAppointmentModal.reason || "N/A"}
+              <strong>Reason:</strong>{" "}
+              {selectedAppointmentModal.reason || "N/A"}
             </p>
             <p>
               <strong>Status:</strong> {selectedAppointmentModal.status}
@@ -342,7 +343,9 @@ function AppointmentCalendar() {
               {selectedAppointmentModal.visitType || "N/A"}
             </p>
             <p>
-              <strong>Doctor:</strong> Dr. {selectedAppointmentModal.doctorFirstName} {selectedAppointmentModal.doctorLastName}
+              <strong>Doctor:</strong> Dr.{" "}
+              {selectedAppointmentModal.doctorFirstName}{" "}
+              {selectedAppointmentModal.doctorLastName}
             </p>
             <p>
               <strong>Doctor's Email:</strong>{" "}
@@ -355,7 +358,8 @@ function AppointmentCalendar() {
                 : "N/A"}
             </p>
             <p>
-              <strong>Location:</strong> {selectedAppointmentModal.officeName}, {selectedAppointmentModal.officeAddress}
+              <strong>Location:</strong> {selectedAppointmentModal.officeName},{" "}
+              {selectedAppointmentModal.officeAddress}
             </p>
             {/* Add more details as needed */}
             <div className="flex justify-end mt-6">
