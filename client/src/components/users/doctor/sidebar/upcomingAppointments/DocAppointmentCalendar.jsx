@@ -3,7 +3,7 @@ import axios from "axios";
 import { Calendar } from "react-big-calendar";
 import { format, parse, startOfWeek, getDay } from "date-fns";
 import { dateFnsLocalizer } from "react-big-calendar";
-//import "react-big-calendar/lib/css/react-big-calendar.css";
+import "react-big-calendar/lib/css/react-big-calendar.css";
 import AppointmentModal from "./AppointmentModal";
 import MultiSelectInput from "./MultiSelectInput";
 
