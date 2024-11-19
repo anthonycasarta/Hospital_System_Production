@@ -18,9 +18,17 @@ import UserSettingsAndLogout from "./sidebarItems/BottomItemsSidebar";
 import SidebarToggleButton from "../ui/buttons/SidebarToggleButton";
 
 // Files Linked
+<<<<<<< HEAD
 import DoctorDashboard from "../users/doctor/DoctorDashboard";
 import DocAppointmentsPage from "../users/doctor/sidebar/upcomingAppointments/DocAppointmentsPage.jsx";
 import DoctorBookingPage from "../users/doctor/DoctorBookingPage.jsx";
+=======
+import DoctorDashboard from '../users/doctor/DoctorDashboard';
+import DocAppointmentsPage from '../users/doctor/sidebar/upcomingAppointments/DocAppointmentsPage.jsx';
+import DoctorBookingPage from '../users/doctor/DoctorBookingPage.jsx';
+import PatientReports from '../users/admin/sections/patientReport/PatientReport.jsx';
+import DoctorSchedulePage from "../../pages/doctorPages/DoctorSchedulePage.jsx";
+>>>>>>> upstream/main
 
 export default function DoctorSidebar() {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -118,19 +126,15 @@ export default function DoctorSidebar() {
           {activeTab.charAt(0).toUpperCase() +
             activeTab.slice(1).replace("-", " ")}
         </h1>
-
-        {/* Link pages here to according sidebar items */}
-        {activeTab === "dashboard" && <DoctorDashboard />}
-        {activeTab === "appointments" && <DoctorBookingPage />}
-        {activeTab === "visits" && <DocAppointmentsPage />}
-        {activeTab === "schedule" && (
+        
+       {/* Link pages here to according sidebar items */}
+       {activeTab === 'dashboard' && <DoctorDashboard />}
+        {activeTab === 'appointments' && <DoctorBookingPage />}
+        {activeTab === 'visits' && <DocAppointmentsPage />}
+        {activeTab === 'schedule' && <DoctorSchedulePage />}
+        {activeTab === 'patients-list' && (
           <div>
-            <p className="text-gray-700">Place schedule file here</p>
-          </div>
-        )}
-        {activeTab === "patients-list" && (
-          <div>
-            <p className="text-gray-700">Place patients list file here</p>
+            <p className="text-gray-700"><PatientReports /></p>
           </div>
         )}
       </main>
