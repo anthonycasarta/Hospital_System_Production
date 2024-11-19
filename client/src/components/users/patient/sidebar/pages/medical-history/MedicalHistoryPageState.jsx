@@ -40,7 +40,7 @@ export default function MedicalHistoryPage() {
     };
 
     handleMedHistory();
-  }, []);
+  });
 
   // Conditional rendering based on the state
   if (loading) {
