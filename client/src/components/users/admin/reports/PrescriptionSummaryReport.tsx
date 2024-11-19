@@ -14,6 +14,8 @@ type Prescription = {
   [key: string]: string | undefined;
 };
 
+import qs from "qs";
+
 import "../../../../select-styles.css";
 
 import React, { useState, useEffect } from "react";
@@ -103,6 +105,8 @@ export default function PrescriptionSummaryReport() {
               Authorization: `Bearer ${token}`,
             },
             params: { filters, activeTab },
+            paramsSerializer: (params) =>
+              qs.stringify(params, { arrayFormat: "brackets" }),
           }
         );
 
