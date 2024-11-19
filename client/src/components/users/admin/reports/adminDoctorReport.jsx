@@ -323,10 +323,7 @@ const SystemReports = () => {
               </label>
               <Select
                 isMulti
-                options={states.map((state) => ({
-                  value: state.state,
-                  label: state.state,
-                }))}
+                options={states}
                 value={selectedStates}
                 onChange={setSelectedStates}
               />
