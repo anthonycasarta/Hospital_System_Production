@@ -334,10 +334,7 @@ const SystemReports = () => {
               </label>
               <Select
                 isMulti
-                options={cities.map((city) => ({
-                  value: city,
-                  label: city,
-                }))}
+                options={cities}
                 value={selectedCities}
                 onChange={setSelectedCities}
               />
@@ -348,10 +345,7 @@ const SystemReports = () => {
               </label>
               <Select
                 isMulti
-                options={doctors.map((doctor) => ({
-                  value: doctor.doctorID,
-                  label: `${doctor.firstName} ${doctor.lastName}`,
-                }))}
+                options={doctors}
                 value={selectedDoctors}
                 onChange={setSelectedDoctors}
                 placeholder="Select Doctors..."
