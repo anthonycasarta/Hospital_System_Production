@@ -324,8 +324,8 @@ const SystemReports = () => {
               <Select
                 isMulti
                 options={states.map((state) => ({
-                  value: state,
-                  label: state,
+                  value: state.state,
+                  label: state.state,
                 }))}
                 value={selectedStates}
                 onChange={setSelectedStates}
