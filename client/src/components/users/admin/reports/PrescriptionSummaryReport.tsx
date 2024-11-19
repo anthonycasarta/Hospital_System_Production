@@ -100,13 +100,15 @@ export default function PrescriptionSummaryReport() {
           `${envConfig.apiUrl}/auth/admin/get-prescription-report`,
 
           {
-            withCredentials: true,
+            params: {
+              filters: filters,
+              activeTab: activeTab,
+            },
+            paramsSerializer: (params) =>
+              qs.stringify(params, { arrayFormat: "brackets" }),
             headers: {
               Authorization: `Bearer ${token}`,
             },
-            params: { filters, activeTab },
-            paramsSerializer: (params) =>
-              qs.stringify(params, { arrayFormat: "brackets" }),
           }
         );
 
