@@ -21,6 +21,8 @@ import {
 } from "chart.js";
 // import { useHistory } from "react-router-dom";
 
+import envConfig from "../../envConfig";
+
 ChartJS.register(
   BarElement,
   CategoryScale,
@@ -97,7 +99,7 @@ export default function FinancialOverviewPage() {
       }
 
       const response = await axios.get(
-        "http://localhost:3000/auth/admin/billing-report/financial-overview",
+        `${envConfig.apiUrl}/auth/admin/billing-report/financial-overview`,
         {
           headers: { Authorization: `Bearer ${token}` },
           params,
@@ -147,18 +149,15 @@ export default function FinancialOverviewPage() {
 
       const [doctorsResponse, officesResponse, servicesResponse] =
         await Promise.all([
-          axios.get("http://localhost:3000/auth/admin/billing-report/doctors", {
+          axios.get(`${envConfig.apiUrl}/auth/admin/billing-report/doctors`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get("http://localhost:3000/auth/admin/billing-report/offices", {
+          axios.get(`${envConfig.apiUrl}/auth/admin/billing-report/offices`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get(
-            "http://localhost:3000/auth/admin/billing-report/services",
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            }
-          ),
+          axios.get(`${envConfig.apiUrl}/auth/admin/billing-report/services`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
         ]);
 
       setDoctors(doctorsResponse.data.doctors || []);

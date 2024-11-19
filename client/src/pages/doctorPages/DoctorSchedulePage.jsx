@@ -12,6 +12,8 @@ import {
   TableRow,
 } from "../../components/ui/Table";
 
+import envConfig from "../../envConfig";
+
 export default function DoctorSchedulePage() {
   const [todaysSchedule, setTodaysSchedule] = useState([]);
   const [updatedAppointments, setUpdatedAppointments] = useState(new Set());
@@ -23,7 +25,7 @@ export default function DoctorSchedulePage() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "http://localhost:3000/auth/doctor/schedule",
+        `${envConfig.apiUrl}/auth/doctor/schedule`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setTodaysSchedule(response.data.doctorSchedule || []);
