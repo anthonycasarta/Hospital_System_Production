@@ -22,7 +22,7 @@ import AdminNameDisplay from "./sidebarItems/WelcomeAdminName";
 // Files Linked
 import AdminDashboard from "../users/admin/adminDashboard/AdminDashboard";
 import PrescriptionSummaryReport from "../users/admin/reports/PrescriptionSummaryReport";
-import AppointmentAnalytics from "../users/admin/sections/appointmentReport/appointmentAnalytics";
+import AppointmentAnalytics from "../users/admin/sections/appointmentReport/AppointmentAnalytics.jsx";
 import FinancialOverviewPage from "../../pages/adminPages/FinancialReport";
 import DoctorReports from "../users/admin/reports/adminDoctorReport";
 import DoctorManagement from "../users/admin/sections/doctorManagement/doctorManagement";
