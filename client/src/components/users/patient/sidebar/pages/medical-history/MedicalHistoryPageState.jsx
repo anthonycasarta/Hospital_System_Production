@@ -56,7 +56,7 @@ export default function MedicalHistoryPage() {
   );
 
   // Check if insurance info exists
-  if (entries) {
+  if (medHistoryInfo && medHistoryInfo.length > 0) {
     return <EditMedicalHistoryForm />; // Redirect to edit page
   } else {
     return <MedicalHistoryForm />; // Redirect to form page
