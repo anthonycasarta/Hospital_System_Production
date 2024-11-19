@@ -42,7 +42,7 @@ export default function InsurancePage() {
     };
 
     handleInsurance(); // Call the function to fetch insurance info
-  }); // Empty dependency array to call only once on component mount
+  }, []); // Empty dependency array to call only once on component mount
 
   // Conditional rendering based on the state
   if (loading) {
