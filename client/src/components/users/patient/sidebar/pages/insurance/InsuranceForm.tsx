@@ -91,7 +91,7 @@ export default function InsuranceForm() {
 
       if (response.status === 200 && response.data) {
         console.log("Add Insurance Successful!");
-        nav("/patient/dashboard?tab=insurance");
+        nav("/edit-insurance");
       } else {
         setError("Add Insurance failed. Please try again.");
       }

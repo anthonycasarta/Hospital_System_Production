@@ -92,7 +92,7 @@ export default function MedicalHistoryForm() {
 
       if (response.status === 200 && response.data) {
         console.log("Add Medical History Successful!");
-        nav("/patient/dashboard?tab=medical-records");
+        nav("/edit-medical-history");
       } else {
         setError("Add Medical History failed. Please try again.");
       }
