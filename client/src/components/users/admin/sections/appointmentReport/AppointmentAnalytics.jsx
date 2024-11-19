@@ -69,6 +69,10 @@ const AppointmentAnalytics = () => {
     appointmentsOverTime: true,
   });
 
+  // Variables for include inactive checkboxes
+  const [includeInactiveDoctors, setIncludeInactiveDoctors] = useState(false);
+  const [includeInactivePatients, setIncludeInactivePatients] = useState(false);
+
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -102,9 +106,11 @@ const AppointmentAnalytics = () => {
           }),
           axios.get(`${envConfig.apiUrl}/auth/admin/doctors`, {
             headers: { Authorization: `Bearer ${token}` },
+            params: { includeInactive: includeInactiveDoctors },
           }),
           axios.get(`${envConfig.apiUrl}/auth/admin/patients`, {
             headers: { Authorization: `Bearer ${token}` },
+            params: { includeInactive: includeInactivePatients },
           }),
           axios.get(`${envConfig.apiUrl}/auth/admin/statuses`, {
             headers: { Authorization: `Bearer ${token}` },
@@ -137,7 +143,7 @@ const AppointmentAnalytics = () => {
     };
 
     fetchData();
-  }, [token]);
+  }, [token, includeInactiveDoctors, includeInactivePatients]);
 
   const fetchOffices = async (
     states = selectedStates,
@@ -213,6 +219,9 @@ const AppointmentAnalytics = () => {
         params.serviceIDs = selectedServices.map((s) => s.value).join(",");
       }
 
+      params.includeInactiveDoctors = includeInactiveDoctors;
+      params.includeInactivePatients = includeInactivePatients;
+
       const res = await axios.get(
         `${envConfig.apiUrl}/auth/admin/appointmentAnalytics`,
         {
@@ -252,6 +261,8 @@ const AppointmentAnalytics = () => {
     selectedVisitTypes,
     selectedSpecialties,
     selectedServices,
+    includeInactiveDoctors,
+    includeInactivePatients,
   ]);
 
   // Prepare options for react-select
@@ -359,7 +370,6 @@ const AppointmentAnalytics = () => {
             }
           />
 
-          {/* Repeat for other filters */}
           {/* Cities */}
           <MultiSelectInput
             label="Cities"
@@ -401,6 +411,16 @@ const AppointmentAnalytics = () => {
               setChartDisplayOptions((prev) => ({ ...prev, doctor: value }))
             }
           />
+          {/* Include Inactive Doctors Checkbox */}
+          <div className="mb-4">
+            <input
+              type="checkbox"
+              checked={includeInactiveDoctors}
+              onChange={(e) => setIncludeInactiveDoctors(e.target.checked)}
+              className="mr-2"
+            />
+            <label>Include Inactive Doctors</label>
+          </div>
 
           {/* Patients */}
           <MultiSelectInput
@@ -415,6 +435,16 @@ const AppointmentAnalytics = () => {
               setChartDisplayOptions((prev) => ({ ...prev, patient: value }))
             }
           />
+          {/* Include Inactive Patients Checkbox */}
+          <div className="mb-4">
+            <input
+              type="checkbox"
+              checked={includeInactivePatients}
+              onChange={(e) => setIncludeInactivePatients(e.target.checked)}
+              className="mr-2"
+            />
+            <label>Include Inactive Patients</label>
+          </div>
 
           {/* Status */}
           <MultiSelectInput

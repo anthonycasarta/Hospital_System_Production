@@ -1,5 +1,5 @@
 import express from "express";
-import { registerDoctor } from "../../controllers/authController.js";
+import { registerDoctor, getspecialSpecialties} from "../../controllers/authController.js";
 import { getPrescriptionReport } from "../../controllers/admin/adminPrescriptionReport.js";
 import {
   getAppointmentAnalytics,
@@ -13,6 +13,7 @@ import {
   getSpecialties,
   getServices,
 } from "../../controllers/admin/appointmentAnalytics.js";
+import billingReportRouter from "../subRouters/billingReportRouter.js";
 import adminDoctorRouter from "../subRouters/AdminDoctorRouter.js";
 import {
   getAllDoctors,
@@ -28,6 +29,7 @@ import { verifyToken } from "../../middleware/auth.js";
 
 const router = express.Router();
 
+router.get("/specialSpecialties", getspecialSpecialties);
 router.post("/register", registerDoctor);
 router.get("/get-prescription-report", getPrescriptionReport);
 router.get("/appointmentAnalytics", getAppointmentAnalytics);
@@ -50,4 +52,5 @@ router.get("/patientManagement", getAllPatients);
 router.put("/patients/:patientID/inactivate", inactivatePatient);
 router.put("/patients/:patientID/reactivate", reactivatePatient);
 
+router.use("/billing-report", billingReportRouter);
 export default router;

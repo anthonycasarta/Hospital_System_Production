@@ -8,6 +8,8 @@ import {
   CreditCard,
   Tablets,
   BookOpen,
+  NotebookPen,
+  FileHeart,
 } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -20,10 +22,15 @@ import AdminNameDisplay from "./sidebarItems/WelcomeAdminName";
 // Files Linked
 import AdminDashboard from "../users/admin/adminDashboard/AdminDashboard";
 import PrescriptionSummaryReport from "../users/admin/reports/PrescriptionSummaryReport";
-import AppointmentAnalytics from "../users/admin/sections/appointmentReport/AppointmentAnalytics";
+import AppointmentAnalytics from "../users/admin/sections/appointmentReport/appointmentAnalytics";
+import FinancialOverviewPage from "../../pages/adminPages/FinancialReport";
 import DoctorReports from "../users/admin/reports/adminDoctorReport";
 import DoctorManagement from "../users/admin/sections/doctorManagement/doctorManagement";
 import PatientManagement from "../users/admin/sections/patientManagement/PatientManagement";
+
+import RegisterDoctor from "../users/admin/sections/doctorRegistration";
+
+import PatientReports from "../users/admin/sections/patientReport/PatientReport";
 
 export default function AdminSidebar() {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -37,6 +44,11 @@ export default function AdminSidebar() {
     "Manage User": [
       { id: "manage-patients", label: "Patient Profiles", icon: FolderHeart },
       { id: "manage-doctors", label: "Doctor Profiles", icon: UserRoundSearch },
+      {
+        id: "register-doctor",
+        label: "Doctor Registration",
+        icon: NotebookPen,
+      },
     ],
     "Data Reports": [
       { id: "billing-data", label: "Financial Overview", icon: CreditCard },
@@ -51,6 +63,7 @@ export default function AdminSidebar() {
         icon: CalendarSearch,
       },
       { id: "doctor-data", label: "Doctor Reports", icon: BookOpen }, //Icon is currently placeholder
+      { id: "patient-data", label: "Patient Reports", icon: FileHeart },
     ],
   };
 
@@ -125,7 +138,7 @@ export default function AdminSidebar() {
         {activeTab === "dashboard" && <AdminDashboard />}
         {activeTab === "manage-patients" && <PatientManagement />}
         {activeTab === "manage-doctors" && <DoctorManagement />}
-        {activeTab === "billing-data" && <div>bill stuff</div>}
+        {activeTab === "register-doctor" && <RegisterDoctor />}
         {activeTab === "prescription-analysis" && (
           <div>
             <PrescriptionSummaryReport />
@@ -133,8 +146,10 @@ export default function AdminSidebar() {
         )}
 
         {activeTab === "appointment-data" && <AppointmentAnalytics />}
+        {activeTab === "billing-data" && <FinancialOverviewPage />}
 
         {activeTab === "doctor-data" && <DoctorReports />}
+        {activeTab === "patient-data" && <PatientReports />}
       </main>
     </div>
   );

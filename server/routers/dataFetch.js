@@ -17,6 +17,7 @@ import {
   totalDoctors,
   totalPatients,
 } from "../controllers/adminDashboard.js";
+import { getPatientServices } from "../controllers/admin/patientReports.js";
 
 const router = express.Router();
 
@@ -39,5 +40,8 @@ router.get(
   getUpcomingAppointmentAdmin
 );
 router.get("/get-doctors-list", verifyToken, listOfDocAdmin);
+
+// Patient Reports
+router.get("/get-patient-services", verifyToken, getPatientServices);
 
 export default router;
