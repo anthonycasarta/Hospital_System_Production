@@ -99,7 +99,6 @@ export default function PrescriptionSummaryReport() {
 
           {
             params: { filters: filters, activeTab: activeTab },
-            withCredentials: true,
             headers: {
               Authorization: `Bearer ${token}`,
             },
